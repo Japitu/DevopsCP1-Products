@@ -1,23 +1,30 @@
 package br.com.fiap.to;
 
+import br.com.fiap.enums.TipoArea;
 import br.com.fiap.enums.TipoStatusServico;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class ServicoTO {
     private long id;
     private String nome;
-    private String descricao;
-    private LocalDate horasGastas;
+    private long projetoId;
+    private String projetoNome;
+    private String projetoNumero;
+    private TipoArea area;
+    private LocalTime horasTotal;
     private TipoStatusServico statusServico;
 
     public ServicoTO() {}
 
-    public ServicoTO(long id, String nome, long idProjeto, String nomeProjeto, String descricao, LocalDate horasGastas, TipoStatusServico statusServico) {
+    public ServicoTO(long id, String nome, long projetoId, String projetoNome, String projetoNumero, TipoArea area, LocalTime horasTotal, TipoStatusServico statusServico) {
         this.id = id;
         this.nome = nome;
-        this.descricao = descricao;
-        this.horasGastas = horasGastas;
+        this.projetoId = projetoId;
+        this.projetoNome = projetoNome;
+        this.projetoNumero = projetoNumero;
+        this.area = area;
+        this.horasTotal = horasTotal;
         this.statusServico = statusServico;
     }
 
@@ -37,20 +44,44 @@ public class ServicoTO {
         this.nome = nome;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public long getProjetoId() {
+        return projetoId;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setProjetoId(long projetoId) {
+        this.projetoId = projetoId;
     }
 
-    public LocalDate getHorasGastas() {
-        return horasGastas;
+    public String getProjetoNome() {
+        return projetoNome;
     }
 
-    public void setHorasGastas(LocalDate horasGastas) {
-        this.horasGastas = horasGastas;
+    public void setProjetoNome(String projetoNome) {
+        this.projetoNome = projetoNome;
+    }
+
+    public String getProjetoNumero() {
+        return projetoNumero;
+    }
+
+    public void setProjetoNumero(String projetoNumero) {
+        this.projetoNumero = projetoNumero;
+    }
+
+    public TipoArea getArea() {
+        return area;
+    }
+
+    public void setArea(TipoArea area) {
+        this.area = area;
+    }
+
+    public LocalTime getHorasTotal() {
+        return horasTotal;
+    }
+
+    public void setHorasTotal(LocalTime horasTotal) {
+        this.horasTotal = horasTotal;
     }
 
     public TipoStatusServico getStatusServico() {
