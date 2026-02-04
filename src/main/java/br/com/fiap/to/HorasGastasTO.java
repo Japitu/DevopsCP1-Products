@@ -5,12 +5,12 @@ import java.time.LocalTime;
 
 public class HorasGastasTO {
 
-    private long id;
-    private LocalDate data;
-    private LocalTime horaInicio;
-    private LocalTime horaFim;
-    private UsuarioTO usuario;
-    private ServicoTO servico;
+    private long id; // id_horas
+    private LocalDate data; // dt_horas
+    private LocalTime horaInicio; // hr_horas_inicio
+    private LocalTime horaFim; // hr_horas_fim
+    private UsuarioTO usuario; // id -> id_usuario
+    private ServicoTO servico; // id -> id_servico
 
     public HorasGastasTO() {}
 

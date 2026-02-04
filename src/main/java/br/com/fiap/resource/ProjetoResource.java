@@ -46,15 +46,19 @@ public class ProjetoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response save(@Valid ProjetoTO projeto) {
-        ProjetoTO resultado = projetoBO.save(projeto);
-        Response.ResponseBuilder response = null;
-        if (resultado != null) {
-            response = Response.created(null);
-        } else {
-            response = Response.status(400);
+        try {
+            ProjetoTO result = projetoBO.save(projeto);
+            Response.ResponseBuilder responseBuilder = null;
+            if (result != null) {
+                responseBuilder = Response.created(null);
+            } else {
+                responseBuilder = Response.status(400);
+            }
+            responseBuilder.entity(result);
+            return responseBuilder.build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        response.entity(resultado);
-        return response.build();
     }
 
     @DELETE
@@ -73,15 +77,19 @@ public class ProjetoResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(@Valid ProjetoTO projeto, @PathParam("id") Long id) {
-        projeto.setId(id);
-        ProjetoTO resultado = projetoBO.update(projeto);
-        Response.ResponseBuilder response = null;
-        if (resultado != null) {
-            response = Response.created(null);
-        } else {
-            response = Response.status(400);
+        try {
+            projeto.setId(id);
+            ProjetoTO result = projetoBO.update(projeto);
+            Response.ResponseBuilder responseBuilder = null;
+            if (result != null) {
+                responseBuilder = Response.created(null);
+            } else {
+                responseBuilder = Response.status(400);
+            }
+            responseBuilder.entity(result);
+            return responseBuilder.build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        response.entity(resultado);
-        return response.build();
     }
 }
