@@ -15,7 +15,7 @@ public class ServicoDAO {
 
     public ArrayList<ServicoTO> findAll() {
         ArrayList<ServicoTO> servicos = new ArrayList<ServicoTO>();
-        String sql = "select s.*, p.nm_projeto, u.nm_usuario from tb_servico s inner join tb_projeto p on f.id_projeto = p.id_projeto inner join tb_usuario u on f.id_usuario = u.id_usuario order by s.nm_servico ASC";
+        String sql = "select s.*, p.nm_projeto, u.nm_usuario from tb_servico s inner join tb_projeto p on s.id_projeto = p.id_projeto inner join tb_usuario u on s.id_usuario = u.id_usuario order by s.nm_servico ASC";
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             if (rs != null) {
@@ -44,7 +44,7 @@ public class ServicoDAO {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao buscar servico por ID");
+            System.out.println("Erro na consulta: " + e.getMessage());
         } finally {
             ConnectionFactory.closeConnection();
         }
@@ -55,7 +55,7 @@ public class ServicoDAO {
         ServicoTO servico = new ServicoTO();
         ProjetoTO projeto = new ProjetoTO();
         UsuarioTO usuario = new UsuarioTO();
-        String sql = "select s.*, p.nm_projeto, u.nm_usuario from tb_servico s inner join tb_projeto p on f.id_projeto = p.id_projeto inner join tb_usuario u on f.id_usuario = u.id_usuario where s.id_servico = ?";
+        String sql = "select s.*, p.nm_projeto, u.nm_usuario from tb_servico s inner join tb_projeto p on s.id_projeto = p.id_projeto inner join tb_usuario u on s.id_usuario = u.id_usuario where s.id_servico = ?";
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
@@ -78,7 +78,7 @@ public class ServicoDAO {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao buscar servico por ID");
+            System.out.println("Erro ao buscar: " + e.getMessage());
         } finally {
             ConnectionFactory.closeConnection();
         }
@@ -86,22 +86,21 @@ public class ServicoDAO {
     }
 
     public ServicoTO save(ServicoTO servico) {
-        String sql = "insert into tb_servico (id_servico, nm_servico, id_projeto, st_servico, ar_servico, hr_servico, id_usuario) values (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into tb_servico (nm_servico, id_projeto, st_servico, ar_servico, hr_servico, id_usuario) values (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
-            ps.setLong(1, servico.getId());
-            ps.setString(2, servico.getNome());
-            ps.setLong(3, servico.getProjeto().getId());
-            ps.setString(4, servico.getStatusServico().toString());
-            ps.setString(5, servico.getArea().toString());
-            ps.setString(6, servico.getHorasTotal().toString());
-            ps.setLong(7, servico.getUsuario().getId());
+            ps.setString(1, servico.getNome());
+            ps.setLong(2, servico.getProjeto().getId());
+            ps.setString(3, servico.getStatusServico().toString());
+            ps.setString(4, servico.getArea().toString());
+            ps.setString(5, servico.getHorasTotal().toString());
+            ps.setLong(6, servico.getUsuario().getId());
             if (ps.executeUpdate() > 0) {
                 return servico;
             } else {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao salvar servico por ID");
+            System.out.println("Erro ao salvar: " + e.getMessage());
         } finally {
             ConnectionFactory.closeConnection();
         }
@@ -114,7 +113,7 @@ public class ServicoDAO {
             ps.setLong(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Erro ao deletar servico por ID");
+            System.out.println("Erro ao excluir: " + e.getMessage());
         } finally {
             ConnectionFactory.closeConnection();
         }
@@ -137,7 +136,7 @@ public class ServicoDAO {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao atualizar servico por ID");
+            System.out.println("Erro ao atualizar: " + e.getMessage());
         } finally {
             ConnectionFactory.closeConnection();
         }

@@ -1,6 +1,7 @@
 package br.com.fiap.resource;
 
-import br.com.fiap.bo.ServicoBO;
+import br.com.fiap.bo.ClienteBO;
+import br.com.fiap.to.ClienteTO;
 import br.com.fiap.to.ServicoTO;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -9,18 +10,18 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.ArrayList;
 
-@Path("/servico")
+@Path("/cliente")
 
-public class ServicoResource {
-    private ServicoBO servicoBO = new ServicoBO();
+public class ClienteResouce {
+    private ClienteBO clienteBO = new ClienteBO();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response save (@Valid ServicoTO servico) {
+    public Response save(@Valid ClienteTO cliente) {
         try {
-            ServicoTO result = servicoBO.save(servico);
+            ClienteTO result = clienteBO.save(cliente);
             Response.ResponseBuilder responseBuilder = null;
-            if(result != null) {
+            if (result != null) {
                 responseBuilder = Response.created(null);
             } else {
                 responseBuilder = Response.status(400);
@@ -35,12 +36,12 @@ public class ServicoResource {
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update (@Valid ServicoTO servico, @PathParam("id") Long id) {
+    public Response update (@Valid ClienteTO cliente, @PathParam("id") Long id) {
         try {
-            servico.setId(id);
-            ServicoTO result = servicoBO.update(servico);
+            cliente.setId(id);
+            ClienteTO result = clienteBO.update(cliente);
             Response.ResponseBuilder responseBuilder = null;
-            if(result != null) {
+            if (result!= null) {
                 responseBuilder = Response.created(null);
             } else {
                 responseBuilder = Response.status(400);
@@ -56,7 +57,7 @@ public class ServicoResource {
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
         Response.ResponseBuilder responseBuilder = null;
-        if(servicoBO.delete(id)) {
+        if(clienteBO.delete(id)) {
             responseBuilder = Response.status(204);
         } else {
             responseBuilder = Response.status(404);
@@ -67,7 +68,7 @@ public class ServicoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        ArrayList<ServicoTO> resultado = servicoBO.findAll();
+        ArrayList<ClienteTO> resultado = clienteBO.findAll();
         Response.ResponseBuilder responseBuilder = null;
         if(resultado != null) {
             responseBuilder = Response.ok();
@@ -82,7 +83,7 @@ public class ServicoResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("id") Long id) {
-        ServicoTO result = servicoBO.findById(id);
+        ClienteTO result = clienteBO.findById(id);
         Response.ResponseBuilder responseBuilder = null;
         if(result != null) {
             responseBuilder = Response.ok();
@@ -92,6 +93,5 @@ public class ServicoResource {
         responseBuilder.entity(result);
         return responseBuilder.build();
     }
-
 
 }

@@ -1,6 +1,6 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.enums.TipoStatusProjeto;
+import br.com.fiap.to.ClienteTO;
 import br.com.fiap.to.ProjetoTO;
 
 import java.sql.PreparedStatement;
@@ -12,14 +12,21 @@ public class ProjetoDAO {
 
     public ArrayList<ProjetoTO> findAll() {
         ArrayList<ProjetoTO> projetos = new ArrayList<ProjetoTO>();
-        String sql = "select * from t_mw_projeto order by id_projeto";
+        String sql = "select p.*, c.nm_cliente from tb_projeto p inner join tb_cliente c on p.id_cliente = c.id_cliente order by p.nm_projeto ASC";
         try(PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             if (rs != null) {
                 while (rs.next()) {
                     ProjetoTO projeto = new ProjetoTO();
+                    ClienteTO cliente = new ClienteTO();
+
                     projeto.setId(rs.getLong("id_projeto"));
                     projeto.setNome(rs.getString("nm_projeto"));
+                    projeto.setNumeroProjeto(rs.getString("nr_projeto"));
+
+                    cliente.setId(rs.getLong("id_cliente"));
+                    cliente.setNome(rs.getString("nm_cliente"));
+                    projeto.setCliente(cliente);
 
                     projetos.add(projeto);
                 }
@@ -36,14 +43,19 @@ public class ProjetoDAO {
 
     public ProjetoTO findById(Long id) {
         ProjetoTO projeto = new ProjetoTO();
-        String sql = "select * from t_mw_projeto where id_projeto";
+        ClienteTO cliente = new ClienteTO();
+        String sql = "select p.*, c.nm_cliente from tb_projeto p inner join tb_cliente c on p.id_cliente = c.id_cliente where p.id_projeto = ?";
         try(PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)){
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 projeto.setId(rs.getLong("id_projeto"));
                 projeto.setNome(rs.getString("nm_projeto"));
-                projeto.setStatus(TipoStatusProjeto.valueOf(rs.getString("st_projeto")));
+                projeto.setNumeroProjeto(rs.getString("nr_projeto"));
+
+                cliente.setId(rs.getLong("id_cliente"));
+                cliente.setNome(rs.getString("nm_cliente"));
+                projeto.setCliente(cliente);
             } else {
                 return null;
             }
@@ -56,10 +68,11 @@ public class ProjetoDAO {
     }
 
     public ProjetoTO save(ProjetoTO projeto) {
-        String sql = "insert into t_mw_projeto (nm_projeto, dc_projeto, st_projeto) values (?, ?, ?)";
+        String sql = "insert into tb_projeto (nm_projeto, nr_projeto, id_cliente) values (?, ?, ?)";
         try(PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
             ps.setString(1, projeto.getNome());
-            ps.setString(3, projeto.getStatus().name());
+            ps.setString(2, projeto.getNumeroProjeto());
+            ps.setLong(3, projeto.getCliente().getId());
             if (ps.executeUpdate() > 0) {
                 return projeto;
             } else {
@@ -74,7 +87,7 @@ public class ProjetoDAO {
     }
 
     public boolean delete (Long id) {
-        String sql = "delete from t_mw_projeto where id_projeto = ?";
+        String sql = "delete from tb_projeto where id_projeto = ?";
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
             ps.setLong(1, id);
             return ps.executeUpdate() > 0;
@@ -87,10 +100,11 @@ public class ProjetoDAO {
     }
 
     public ProjetoTO update(ProjetoTO projeto) {
-        String sql = "update t_mw_projeto set nm_projeto = ?, dc_projeto = ?, st_projeto = ? where id_projeto = ?";
+        String sql = "update tb_projeto set nm_projeto = ?, nr_projeto = ?, id_cliente = ? where id_projeto = ?";
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
             ps.setString(1, projeto.getNome());
-            ps.setString(3, projeto.getStatus().name());
+            ps.setString(2, projeto.getNumeroProjeto());
+            ps.setLong(3, projeto.getCliente().getId());
             ps.setLong(4, projeto.getId());
             if (ps.executeUpdate() > 0) {
                 return projeto;
@@ -104,6 +118,4 @@ public class ProjetoDAO {
         }
         return null;
     }
-
-
 }

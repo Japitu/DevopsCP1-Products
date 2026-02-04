@@ -4,14 +4,16 @@ public class ProjetoTO { // nt_cp_projeto
     private long id; // id_projeto
     private String nome; // nm_projeto
     private String numeroProjeto; // nr_projeto
+    private ClienteTO cliente;
 
     public ProjetoTO() {
     }
 
-    public ProjetoTO(long id, String nome, String numeroProjeto) {
+    public ProjetoTO(long id, String nome, String numeroProjeto, ClienteTO cliente) {
         this.id = id;
         this.nome = nome;
         this.numeroProjeto = numeroProjeto;
+        this.cliente = cliente;
     }
 
     public long getId() {
@@ -38,8 +40,13 @@ public class ProjetoTO { // nt_cp_projeto
         this.numeroProjeto = numeroProjeto;
     }
 
+    public ClienteTO getCliente() {
+        return cliente;
+    }
 
-
+    public void setCliente(ClienteTO cliente) {
+        this.cliente = cliente;
+    }
 }
 
 

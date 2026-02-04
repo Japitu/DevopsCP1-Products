@@ -10,9 +10,9 @@ import br.com.fiap.to.UsuarioTO;
 import java.util.ArrayList;
 
 public class ServicoBO {
-    private ServicoDAO servicoDAO = new ServicoDAO();
-    private ProjetoDAO projetoDAO = new ProjetoDAO();
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private ServicoDAO servicoDAO;
+    private ProjetoDAO projetoDAO;
+    private UsuarioDAO usuarioDAO;
 
     public ArrayList<ServicoTO> findAll() {
         servicoDAO = new ServicoDAO();
@@ -74,6 +74,7 @@ public class ServicoBO {
 
         servico.setProjeto(servicoProjeto);
         servico.setUsuario(servicoUsuario);
+
         return servicoDAO.update(servico);
     }
 }

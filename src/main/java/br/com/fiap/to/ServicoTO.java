@@ -14,6 +14,7 @@ public class ServicoTO {
     private TipoStatusServico statusServico;
     private UsuarioTO usuario;
 
+
     public ServicoTO() {}
 
     public ServicoTO(long id, String nome, ProjetoTO projeto, TipoArea area, LocalTime horasTotal, TipoStatusServico statusServico, UsuarioTO usuario) {

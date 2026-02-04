@@ -9,18 +9,18 @@ public class HorasGastasTO {
     private LocalDate data;
     private LocalTime horaInicio;
     private LocalTime horaFim;
-    private long userId;
-    private String userNome;
+    private UsuarioTO usuario;
+    private ServicoTO servico;
 
     public HorasGastasTO() {}
 
-    public HorasGastasTO(long id, LocalDate data, LocalTime horaInicio, LocalTime horaFim, long userId, String userNome) {
+    public HorasGastasTO(long id, LocalDate data, LocalTime horaInicio, LocalTime horaFim, UsuarioTO usuario, ServicoTO servico) {
         this.id = id;
         this.data = data;
         this.horaInicio = horaInicio;
         this.horaFim = horaFim;
-        this.userId = userId;
-        this.userNome = userNome;
+        this.usuario = usuario;
+        this.servico = servico;
     }
 
     public long getId() {
@@ -55,19 +55,21 @@ public class HorasGastasTO {
         this.horaFim = horaFim;
     }
 
-    public long getUserId() {
-        return userId;
+    public UsuarioTO getUsuario() {
+        return usuario;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUsuario(UsuarioTO usuario) {
+        this.usuario = usuario;
     }
 
-    public String getUserNome() {
-        return userNome;
+    public ServicoTO getServico() {
+        return servico;
     }
 
-    public void setUserNome(String userNome) {
-        this.userNome = userNome;
+    public void setServico(ServicoTO servico) {
+        this.servico = servico;
     }
+
+
 }

@@ -46,15 +46,15 @@ public class UsuarioResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response save(@Valid UsuarioTO usuario) {
-        UsuarioTO resultado = usuarioBO.save(usuario);
-        Response.ResponseBuilder response = null;
-        if (resultado != null) {
-            response = Response.created(null);
+        UsuarioTO result = usuarioBO.save(usuario);
+        Response.ResponseBuilder responseBuilder = null;
+        if (result != null) {
+            responseBuilder = Response.created(null);
         } else {
-            response = Response.status(400);
+            responseBuilder = Response.status(400);
         }
-        response.entity(resultado);
-        return response.build();
+        responseBuilder.entity(result);
+        return responseBuilder.build();
     }
 
     @DELETE
@@ -74,15 +74,15 @@ public class UsuarioResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(@Valid UsuarioTO usuario, @PathParam("id") Long id) {
         usuario.setId(id);
-        UsuarioTO resultado = usuarioBO.update(usuario);
-        Response.ResponseBuilder response = null;
-        if (resultado != null) {
-            response = Response.created(null);
+        UsuarioTO result = usuarioBO.update(usuario);
+        Response.ResponseBuilder responseBuilder = null;
+        if (result != null) {
+            responseBuilder = Response.created(null);
         } else {
-            response = Response.status(400);
+            responseBuilder = Response.status(400);
         }
-        response.entity(resultado);
-        return response.build();
+        responseBuilder.entity(result);
+        return responseBuilder.build();
     }
 
 }
