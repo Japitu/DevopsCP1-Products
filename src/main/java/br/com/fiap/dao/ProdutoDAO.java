@@ -1,25 +1,27 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.to.UsuarioTO;
+import br.com.fiap.to.ProdutoTO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class UsuarioDAO {
+public class ProdutoDAO {
 
-    public ArrayList<UsuarioTO> findAll() {
-        ArrayList<UsuarioTO> usuarios = new ArrayList<UsuarioTO>();
-        String sql = "select * from tb_usuario order by id_usuario";
+    public ArrayList<ProdutoTO> findAll() {
+        ArrayList<ProdutoTO> produtos = new ArrayList<ProdutoTO>();
+        String sql = "select * from t_produto order by id_produto";
         try(PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             if (rs != null) {
                 while (rs.next()) {
-                    UsuarioTO usuario = new UsuarioTO();
-                    usuario.setId(rs.getLong("id_usuario"));
-                    usuario.setNome(rs.getString("nm_usuario"));
-                    usuarios.add(usuario);
+                    ProdutoTO produto = new ProdutoTO();
+                    produto.setId(rs.getLong("id_produto"));
+                    produto.setNome(rs.getString("nm_produto"));
+                    produto.setDescricao(rs.getString("dc_produto"));
+                    produto.setPreco(rs.getDouble("prc_produto"));
+                    produtos.add(produto);
                 }
             } else {
                 return null;
@@ -29,18 +31,20 @@ public class UsuarioDAO {
         } finally {
             ConnectionFactory.closeConnection();
         }
-        return usuarios;
+        return produtos;
     }
 
-    public UsuarioTO findById(Long id) {
-        UsuarioTO usuario = new UsuarioTO();
-        String sql = "select * from tb_usuario where id_usuario = ?";
+    public ProdutoTO findById(Long id) {
+        ProdutoTO produto = new ProdutoTO();
+        String sql = "select * from t_produto where id_produto = ?";
         try(PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)){
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
-                usuario.setId(rs.getLong("id_usuario"));
-                usuario.setNome(rs.getString("nm_usuario"));
+                produto.setId(rs.getLong("id_produto"));
+                produto.setNome(rs.getString("nm_produto"));
+                produto.setDescricao(rs.getString("dc_produto"));
+                produto.setPreco(rs.getDouble("prc_produto"));
             } else {
                 return null;
             }
@@ -49,15 +53,17 @@ public class UsuarioDAO {
         } finally {
             ConnectionFactory.closeConnection();
         }
-        return usuario;
+        return produto;
     }
 
-    public UsuarioTO save(UsuarioTO usuario) {
-        String sql = "insert into tb_usuario (nm_usuario) values (?)";
+    public ProdutoTO save(ProdutoTO produto) {
+        String sql = "insert into t_produto (nm_produto, dc_produto, prc_produto) values (?, ?, ?)";
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
-            ps.setString(1, usuario.getNome());
+            ps.setString(1, produto.getNome());
+            ps.setString(2, produto.getDescricao());
+            ps.setDouble(3, produto.getPreco());
             if (ps.executeUpdate() > 0) {
-                return usuario;
+                return produto;
             } else {
                 return null;
             }
@@ -70,7 +76,7 @@ public class UsuarioDAO {
     }
 
     public boolean delete (Long id) {
-        String sql = "delete from tb_usuario where id_usuario = ?";
+        String sql = "delete from t_produto where id_produto = ?";
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
             ps.setLong(1, id);
             return ps.executeUpdate() > 0;
@@ -82,13 +88,15 @@ public class UsuarioDAO {
         return false;
     }
 
-    public UsuarioTO update(UsuarioTO usuario) {
-        String sql = "update tb_usuario set nm_usuario = ? where id_usuario = ?";
+    public ProdutoTO update(ProdutoTO produto) {
+        String sql = "update t_produto set nm_produto = ?, dc_produto = ?, prc_produto = ? where id_produto = ?";
         try (PreparedStatement ps = ConnectionFactory.getConnection().prepareStatement(sql)) {
-            ps.setString(1, usuario.getNome());
-            ps.setLong(2, usuario.getId());
+            ps.setString(1, produto.getNome());
+            ps.setString(2, produto.getDescricao());
+            ps.setDouble(3, produto.getPreco());
+            ps.setLong(4, produto.getId());
             if (ps.executeUpdate() > 0) {
-                return usuario;
+                return produto;
             } else {
                 return null;
             }
@@ -99,5 +107,4 @@ public class UsuarioDAO {
         }
         return null;
     }
-
 }
